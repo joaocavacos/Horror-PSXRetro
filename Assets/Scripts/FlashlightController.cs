@@ -20,9 +20,14 @@ public class FlashlightController : MonoBehaviour
         energyPercentage = maxEnergyPercentage;
     }
 
-    private void Start()
+    private void OnEnable()
     {
         InputManager.OnFlashlightToggle += HandleFlashlightToggle;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.OnFlashlightToggle -= HandleFlashlightToggle;
     }
 
     void Update()
@@ -39,25 +44,25 @@ public class FlashlightController : MonoBehaviour
 
     void ToggleOn()
     {
-        //UIManager.Instance.UpdateEnergy(energyPercentage);
-
-        //Item batteryItem = Inventory.Instance.GetItemByID(0);
+        InventoryItem batteryItem = Inventory.Instance.GetItemByID(0);
 
         if (energyPercentage > 0)
         {
             flashLight.enabled = true;
             energyPercentage -= energyConsumption * Time.deltaTime;
         }
-        else if (energyPercentage <= 0) //Reload Flashlight && batteryItem != null
+        else if (energyPercentage <= 0) 
         {
-            energyPercentage = maxEnergyPercentage;
-            //Inventory.Instance.RemoveItem(batteryItem, 1);
+            if(batteryItem != null) //Reload Flashlight
+            {
+                Inventory.Instance.RemoveItem(batteryItem.itemData);
+                energyPercentage = maxEnergyPercentage;
+            }
+            else 
+            {
+                ToggleOff();
+            }
         }
-        else if (energyPercentage <= 0) //Toggle off if no battery && batteryItem == null
-        {
-            ToggleOff();
-        }
-
     }
 
     void ToggleOff()

@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Battery : MonoBehaviour, ICollectible
+public class Battery : MonoBehaviour, ICollectible, IUsable
 {
-    public static event HandleBatteryCollected OnBatteryCollected;
     public delegate void HandleBatteryCollected(ItemData itemData);
+    public static event HandleBatteryCollected OnBatteryCollected;
+
+    public delegate void HandleBatteryUsed(ItemData itemData);
+    public static event HandleBatteryUsed OnBatteryUsed;
 
     public ItemData batteryData;
 
@@ -16,5 +19,8 @@ public class Battery : MonoBehaviour, ICollectible
         OnBatteryCollected?.Invoke(batteryData);
     }
 
-   
+    public void Use()
+    {
+        OnBatteryUsed?.Invoke(batteryData);
+    }
 }

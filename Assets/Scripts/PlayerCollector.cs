@@ -27,16 +27,11 @@ public class PlayerCollector : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         collectible = other.GetComponent<ICollectible>();
-        print($"Trigger entered is {collectible}");
+        print($"Trigger entered in {collectible}");
     }
 
     private void OnTriggerExit(Collider other)
     {
         collectible = null;
-        print("Trigger exit");
     }
-
-
-
-
 }
