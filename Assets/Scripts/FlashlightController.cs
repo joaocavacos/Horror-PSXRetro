@@ -22,7 +22,7 @@ public class FlashlightController : MonoBehaviour
 
     private void Start()
     {
-        InputManager.Instance.OnFlashlightToggle += HandleFlashlightToggle;
+        InputManager.OnFlashlightToggle += HandleFlashlightToggle;
     }
 
     void Update()

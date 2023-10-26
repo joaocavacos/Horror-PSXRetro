@@ -2,46 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
-public class InputManager : Singleton<InputManager>
+public class InputManager : MonoBehaviour
 {
     private PlayerInput input;
 
     private InputAction flashlightToggleAction;
     private InputAction moveAction;
     private InputAction sprintAction;
-    private InputAction interactAction;
+    private InputAction collectAction;
     private InputAction grabAction;
     private InputAction pauseAction;
 
     public delegate void FlashlightToggleAction();
-    public event FlashlightToggleAction OnFlashlightToggle;
+    public static event FlashlightToggleAction OnFlashlightToggle;
 
     public delegate void MoveAction(Vector2 move);
-    public event MoveAction OnMove;
+    public static event MoveAction OnMove;
 
     public delegate void SprintAction(bool isSprinting);
-    public event SprintAction OnSprint;
+    public static event SprintAction OnSprint;
 
-    public delegate void InteractAction();
-    public event InteractAction OnInteract;
+    public delegate void CollectAction();
+    public static event CollectAction OnCollect;
 
     public delegate void GrabAction();
-    public event GrabAction OnGrab;
+    public static event GrabAction OnGrab;
 
     public delegate void PauseAction();
-    public event PauseAction OnPause;
+    public static event PauseAction OnPause;
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
-
         input = new PlayerInput();
+        input.Enable();
 
         flashlightToggleAction = input.Player.Flashlight;
         moveAction = input.Player.Move;
         sprintAction = input.Player.Sprint;
-        interactAction = input.Player.Interact;
+        collectAction = input.Player.Interact;
         grabAction = input.Player.Grab;
         pauseAction = input.Player.Pause;
 
@@ -50,17 +50,12 @@ public class InputManager : Singleton<InputManager>
         moveAction.canceled += MoveCanceled;
         sprintAction.performed += SprintPerformed;
         sprintAction.canceled += SprintCanceled;
-        interactAction.performed += InteractPerformed;
+        collectAction.performed += CollectPerformed;
         grabAction.performed += GrabPerformed;
         pauseAction.performed += PausePerformed;
     }
 
-    private void OnEnable()
-    {
-        input.Enable();
-    }
-
-    private void OnDisable()
+    private void OnDestroy()
     {
         input.Disable();
     }
@@ -80,7 +75,7 @@ public class InputManager : Singleton<InputManager>
     private void TogglePerformed(InputAction.CallbackContext context) => OnFlashlightToggle?.Invoke();
     private void SprintPerformed(InputAction.CallbackContext context) => OnSprint?.Invoke(true);
     private void SprintCanceled(InputAction.CallbackContext context) => OnSprint?.Invoke(false);
-    private void InteractPerformed(InputAction.CallbackContext context) => OnInteract?.Invoke();
+    private void CollectPerformed(InputAction.CallbackContext context) => OnCollect?.Invoke();
     private void GrabPerformed(InputAction.CallbackContext context) => OnGrab?.Invoke();
     private void PausePerformed(InputAction.CallbackContext context) => OnPause?.Invoke();
 }

@@ -26,8 +26,8 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        InputManager.Instance.OnSprint += HandleSprint;
-        InputManager.Instance.OnMove += OnMove;
+        InputManager.OnSprint += HandleSprint;
+        InputManager.OnMove += OnMove;
 
         rb = GetComponent<Rigidbody>();
 
