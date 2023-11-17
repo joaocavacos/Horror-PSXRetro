@@ -13,6 +13,8 @@ public class Battery : MonoBehaviour, ICollectible, IUsable
 
     public ItemData batteryData;
 
+    public string Name { get => batteryData.itemName; }
+
     public void Collect()
     {
         Destroy(gameObject);
