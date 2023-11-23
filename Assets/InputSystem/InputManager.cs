@@ -12,6 +12,7 @@ public class InputManager : MonoBehaviour
     private InputAction moveAction;
     private InputAction sprintAction;
     private InputAction collectAction;
+    private InputAction useAction;
     private InputAction grabAction;
     private InputAction pauseAction;
 
@@ -27,6 +28,9 @@ public class InputManager : MonoBehaviour
     public delegate void CollectAction();
     public static event CollectAction OnCollect;
 
+    public delegate void UseAction();
+    public static event UseAction OnUse;
+
     public delegate void GrabAction();
     public static event GrabAction OnGrab;
 
@@ -41,7 +45,8 @@ public class InputManager : MonoBehaviour
         flashlightToggleAction = input.Player.Flashlight;
         moveAction = input.Player.Move;
         sprintAction = input.Player.Sprint;
-        collectAction = input.Player.Interact;
+        collectAction = input.Player.Collect;
+        useAction = input.Player.Use;
         grabAction = input.Player.Grab;
         pauseAction = input.Player.Pause;
 
@@ -51,6 +56,7 @@ public class InputManager : MonoBehaviour
         sprintAction.performed += SprintPerformed;
         sprintAction.canceled += SprintCanceled;
         collectAction.performed += CollectPerformed;
+        useAction.performed += UsePerformed;
         grabAction.performed += GrabPerformed;
         pauseAction.performed += PausePerformed;
     }
@@ -76,6 +82,7 @@ public class InputManager : MonoBehaviour
     private void SprintPerformed(InputAction.CallbackContext context) => OnSprint?.Invoke(true);
     private void SprintCanceled(InputAction.CallbackContext context) => OnSprint?.Invoke(false);
     private void CollectPerformed(InputAction.CallbackContext context) => OnCollect?.Invoke();
+    private void UsePerformed(InputAction.CallbackContext context) => OnUse?.Invoke();
     private void GrabPerformed(InputAction.CallbackContext context) => OnGrab?.Invoke();
     private void PausePerformed(InputAction.CallbackContext context) => OnPause?.Invoke();
 }
