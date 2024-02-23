@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class FlashlightController : MonoBehaviour
 {
@@ -32,7 +31,10 @@ public class FlashlightController : MonoBehaviour
 
     void Update()
     {
-        if (flashToggle) ToggleOn();
+        if (flashToggle)
+        {
+            ToggleOn();
+        }
     }
 
     private void HandleFlashlightToggle()
@@ -53,7 +55,7 @@ public class FlashlightController : MonoBehaviour
         }
         else if (energyPercentage <= 0) 
         {
-            if(batteryItem != null) //Reload Flashlight
+            if(batteryItem != null) //Reload Flashlight 
             {
                 Inventory.Instance.RemoveItem(batteryItem.itemData);
                 energyPercentage = maxEnergyPercentage;

@@ -17,7 +17,7 @@ public class PlayerCollector : MonoBehaviour
     private void OnDisable()
     {
         InputManager.OnCollect -= HandleCollector;
-        InputManager.OnUse += HandleUsable;
+        InputManager.OnUse -= HandleUsable;
     }
 
     private void HandleCollector()
@@ -39,18 +39,19 @@ public class PlayerCollector : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out collectible))
+        if(other.TryGetComponent(out ICollectible newCollectible))
         {
+            collectible = newCollectible;
             InterfaceManager.Instance.ShowText(collectible.Name);
-            InterfaceManager.Instance.ChangeCrosshair("Open", true);
             print($"Entered {collectible.Name} trigger");
         }
-        else if(other.TryGetComponent(out usable))
+        else if(other.TryGetComponent(out IUsable newUsable))
         {
-            InterfaceManager.Instance.ChangeCrosshair("Open", true);
+            usable = newUsable;
         }
+        InterfaceManager.Instance.ChangeCrosshair("Open", true);
     }
 
     private void OnTriggerExit(Collider other)
